@@ -679,7 +679,11 @@ do_install() {
 					fi
 				fi
 				if version_gte "20.10"; then
-					pkgs="$pkgs docker-compose-plugin docker-ce-rootless-extras$pkg_version"
+					pkgs="$pkgs docker-compose-plugin"
+					# RHEL 10 doesn't support slirp4netns
+					if [ "$lsb_dist" = "rhel" ] && [ "$dist_version" = "10" ]; then
+						pkgs="$pkgs docker-compose-plugin docker-ce-rootless-extras$pkg_version"
+					fi
 				fi
 				if version_gte "23.0"; then
 						pkgs="$pkgs docker-buildx-plugin docker-model-plugin"
